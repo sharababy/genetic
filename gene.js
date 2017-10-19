@@ -7,7 +7,7 @@ function fitness(actual , target){
 	for (var i = 0; i < actual.length; i++) {
 		
 		if (actual[i] == target[i]) {
-			score += 10;
+			score++;
 		}
 	}
 
@@ -111,5 +111,27 @@ function batchCrosover(batch){
 }
 
 
+function mutation(sample){
 
-module.exports = {generateCase,generateBatch,crossover,testFitness,fitness,sortBatch,batchCrosover}
+	var index = parseInt(Math.random()*1000)%(sample.length)
+
+	if (sample[index] === 1) {
+
+		sample[index] = 0;
+	}
+	else{
+		sample[index] = 1;
+	}
+
+	return sample
+}
+
+
+function shouldMutate(){
+
+	return parseInt(Math.random()*100)%2;
+}
+
+
+
+module.exports = {mutation,generateCase,generateBatch,crossover,testFitness,fitness,sortBatch,batchCrosover}
