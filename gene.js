@@ -1,15 +1,10 @@
-'use strict'
-
-var size = 35;
-var batchSize = 100;
-
-var target = "01001110010100100100100100100011110"
+"use strict"
 
 function fitness(actual , target){
 
 	var score = 0;
 
-	for (var i = 0; i <= size; i++) {
+	for (var i = 0; i < actual.length; i++) {
 		
 		if (actual[i] == target[i]) {
 			score += 10;
@@ -19,7 +14,7 @@ function fitness(actual , target){
 	return score;
 }
 
-function generateCase(){
+function generateCase(size){
 
 	var candidate = [];
 
@@ -31,7 +26,7 @@ function generateCase(){
 	//console.log(candidate);
 }
 
-var c1 = generateCase();
+
 
 function testFitness(actual,target){
 
@@ -44,27 +39,77 @@ function testFitness(actual,target){
 }
 
 
-testFitness(c1,target);
+function crossover(c1,c2){
 
-var batch = [];
+	var size = (c1.length);
+	var switchPoint = parseInt((Math.random()*1000))%size;
 
-for (var i = 0; i < batchSize ;i++) {
-	
-	batch.push(generateCase())
+	var cx = "";
 
-}
-
-var max = 0;
-
-for (var i = 0; i < batch.length; i++) {
-	
-	var sample = testFitness( batch[i],target )
-
-	if (sample >= max) {
-
-		max = sample;
+	for (var i = 0; i < switchPoint; i++) {
+		
+		cx = cx + c1[i];
 	}
 
+	for (var i = switchPoint; i < size; i++) {
+		
+		cx = cx + c2[i];
+	}
+
+	return cx;
+
 }
 
-console.log("Max fitness: ",max);
+
+function generateBatch(batchSize , size){
+
+	var batch = [];
+
+	for (var i = 0; i < batchSize ;i++) {
+		
+		batch.push(generateCase(size))
+
+	}
+
+
+	return batch;
+}
+
+function sortBatch(batch , target){
+
+	var max = 0;
+
+	var sorted = [];
+
+	for (var i = 0; i < batch.length; i++) {
+		var m = {}
+
+		m.score = fitness(batch[i],target);
+
+		m.sample = batch[i]
+
+		sorted.push(m)
+		
+	}
+
+	sorted.sort(function(a,b){return a.score-b.score})
+
+	return sorted;
+}
+
+function batchCrosover(batch){
+
+	var crossed = [],next;
+
+	for (var i = 0; i < batch.length-1; i++) {
+		
+		// next = (i+1 === batch.length) ? 0 : i;
+		crossed.push(crossover( batch[i].sample , batch[i+1].sample));
+	}
+
+	return crossed;
+}
+
+
+
+module.exports = {generateCase,generateBatch,crossover,testFitness,fitness,sortBatch,batchCrosover}
