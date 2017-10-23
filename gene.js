@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 function fitness(actual , target){
 
@@ -105,6 +105,7 @@ function batchCrosover(batch){
 		
 		// next = (i+1 === batch.length) ? 0 : i;
 		crossed.push(crossover( batch[i].sample , batch[i+1].sample));
+		//crossed.push(crossover( batch[i].sample , batch[parseInt((Math.random()*1000))%(batch.length-1)].sample));
 	}
 
 	return crossed;
@@ -132,6 +133,22 @@ function shouldMutate(){
 	return parseInt(Math.random()*100)%2;
 }
 
+function startEvolution(batchSize,size,target){
+
+	var gen1 = generateBatch(batchSize,size);
+	var topGen1 = sortBatch(gen1 , target);
+
+	// first cross
+	var crossed =  batchCrosover(topGen1);
+	var cx1 = sortBatch(crossed , target);
+
+	// repeated cross
+	while(cx1[cx1.length-1].score !== size){
+		crossed =  batchCrosover(cx1);
+		cx1 = sortBatch(crossed , target);
+		console.log(cx1[cx1.length-1])
+	}
+}
 
 
-module.exports = {mutation,generateCase,generateBatch,crossover,testFitness,fitness,sortBatch,batchCrosover}
+module.exports = {mutation,generateCase,generateBatch,crossover,testFitness,fitness,sortBatch,batchCrosover,startEvolution}

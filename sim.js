@@ -1,28 +1,25 @@
+'use strict'
+
 function getInputTable(n){
+	
+    var result = [];
 
-	var result = [];
-
-    for(y=0; y < Math.pow(2,n); y++){
-    
+    for(var y=0; y < Math.pow(2,n); y++){    
         var combo = [];
-    
-        for(x=0; x<n; x++){
-    
+        for(var x=0; x<n; x++){
             if((y >> x) & 1)
                 combo.push(1);
              else 
                 combo.push(0);
-    
         }
-    
         result.push(combo);
-    
     }
-    
     return result;
-
 }
 
-var r = getInputTable(3)
+function makeCircuit(n){
 
-console.log(r)
+	
+}
+
+module.exports = {getInputTable}
