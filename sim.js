@@ -42,7 +42,7 @@ function selectRandomlyFrom(array){
 
 function makeCircuit(n){
 
-	var chromosome = [];
+    var chromosome = [];
     var nodes = [];
     var inputs = [];
 
@@ -66,11 +66,11 @@ function makeCircuit(n){
 
     /* First Node */
 
-        var first = {}
+        var first = {};
 
         first.gate = parseInt(Math.random()*10000)%(n);
 
-        inputs.splice(first.gate,1);
+        inputs.splice(inputs.indexOf(first.gate),1);
 
         first.source = 0;
 
@@ -81,18 +81,18 @@ function makeCircuit(n){
         possibleSource.push(first.drain);
 
         chromosome.push(first);
+    
     /* End First Node */
 
 
     for (var i = 0; i < n-1; i++) {
         // for every chromosome
-
         
         var gene = {};
         //select random input
         gene.gate = selectRandomlyFrom(inputs);
         //remove the selected input from possible inputs
-        inputs.splice(gene.gate,1);
+        inputs.splice(inputs.indexOf(gene.gate),1);
         //select random source from possible sources
         gene.source = possibleSource[ parseInt(Math.random()*10000)%(possibleSource.length) ];
         //select random drain except for current source
@@ -107,8 +107,25 @@ function makeCircuit(n){
 }
 
 
-var circuit  = makeCircuit(3);
+function checkValidity(circuit){
 
-console.log(circuit)
+    var sourceMax,drainMax;
+
+    circuit.forEach(function(element){
+
+    	if(element.source > element.drain){
+    		console.log("invalid")
+    	}
+    })
+
+    
+
+    return circuit;
+}
+
+
+//for(var i=0; i<10;i++){
+        console.log(checkValidity(makeCircuit(3)))
+//}
 
 module.exports = {getInputTable}
