@@ -109,23 +109,57 @@ function makeCircuit(n){
 
 function checkValidity(circuit){
 
-    var sourceMax,drainMax;
-
-    circuit.forEach(function(element){
-
-    	if(element.source > element.drain){
+    for (var i = 0; i < circuit.length; i++) {
+        
+    	if(circuit[i].source > circuit[i].drain){
     		console.log("invalid")
+
+            return 0;
     	}
-    })
+    }    
 
-    
+    return 1;
+}
 
-    return circuit;
+function checkConnectivity(circuit){
+
+    var maxDrains = []
+    var found = 0;
+
+    for (var i = circuit.length; i > 0 ; i--) {
+        
+        for (var j = 0; j < circuit.length; j++) {
+            
+            if (circuit[j].drain === i) {
+
+                maxDrains.push(circuit[j]);
+                found = 1;
+            }
+        }
+
+        if (found === 1) {
+            break;
+        }
+    }
+
+    console.log("Elements with max drain")
+    console.log(maxDrains);
+
+
+
+
 }
 
 
 //for(var i=0; i<10;i++){
-        console.log(checkValidity(makeCircuit(3)))
+        //console.log(checkValidity(makeCircuit(3)))
 //}
+    var c = makeCircuit(3)
+    console.log(c)
+    console.log()
+
+    if(checkValidity(c) === 1){
+        checkConnectivity(c)
+    }
 
 module.exports = {getInputTable}
