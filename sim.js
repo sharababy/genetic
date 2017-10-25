@@ -166,7 +166,11 @@ function traverseCircuit(circuit, start, end){
                 return -1;
             }
             else{
-                return traverseCircuit(p, p[0].source , end);
+                var connection = traverseCircuit(p, p[0].source , end);
+
+                if (connection === -1) {
+                    return -1;
+                }
             }
         }
         else{
