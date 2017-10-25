@@ -114,7 +114,7 @@ function checkValidity(circuit){
     	if(circuit[i].source > circuit[i].drain){
     		console.log("invalid")
 
-            return 0;
+            return -1;
     	}
     }    
 
@@ -198,15 +198,13 @@ function findInSource(drain , circuit){
 //for(var i=0; i<10;i++){
         //console.log(checkValidity(makeCircuit(3)))
 //}
-    var c = makeCircuit(3)
+    var c = makeCircuit(4)
 
-    while(checkValidity(c) !== 1){
-        c = makeCircuit(3)
-        
+    while(checkValidity(c) === -1 || checkConnectivity(c) === -1){
+        c = makeCircuit(4)
     }
 
     console.log(c)
     console.log()
-    console.log(checkConnectivity(c))
 
 module.exports = {getInputTable}
