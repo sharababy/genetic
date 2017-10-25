@@ -142,24 +142,67 @@ function checkConnectivity(circuit){
         }
     }
 
-    console.log("Elements with max drain")
-    console.log(maxDrains);
+    // console.log("Elements with max drain")
+    // console.log(maxDrains);
 
+    var start = 0 , end = maxDrains[0].drain;
 
+    return traverseCircuit(circuit, start, end)
 
 
 }
+    
+function traverseCircuit(circuit, start, end){
 
+    for (var i = 0; i < circuit.length; i++) {
+            
+        var e = circuit[i];
+
+        if (e.drain !== end) {
+            
+            var p = findInSource(e.drain , circuit)
+
+            if (p.length === 0) {
+                return -1;
+            }
+            else{
+                return traverseCircuit(p, p[0].source , end);
+            }
+        }
+        else{
+            continue
+        }
+    }
+
+    return 1;
+}
+
+function findInSource(drain , circuit){
+
+    var path = [];
+
+    for (var i = 0; i < circuit.length; i++) {
+        
+        if (circuit[i].source === drain) {
+            path.push(circuit[i])
+        }
+    }
+
+    return path;
+}
 
 //for(var i=0; i<10;i++){
         //console.log(checkValidity(makeCircuit(3)))
 //}
     var c = makeCircuit(3)
+
+    while(checkValidity(c) !== 1){
+        c = makeCircuit(3)
+        
+    }
+
     console.log(c)
     console.log()
-
-    if(checkValidity(c) === 1){
-        checkConnectivity(c)
-    }
+    console.log(checkConnectivity(c))
 
 module.exports = {getInputTable}
