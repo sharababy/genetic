@@ -247,14 +247,16 @@ function getDuplicatePairs(circuit){
 
 function makeBool(circuit){
 
+    var exp = "",input = 1;
+    var dup = getDuplicatePairs(circuit)
 
-
+    
 
 }
 
     
 
-    var size = 4;
+    var size = 3;
     var c = makeCircuit(size)
 
     while(checkValidity(c) === -1 || checkConnectivity(c) === -1){
