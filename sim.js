@@ -67,7 +67,7 @@ function makeCircuit(n){
 
         var first = {};
 
-        first.gate = parseInt(Math.random()*10000)%(n);
+        first.gate = parseInt(Math.random()*100 + Math.random()*100 + Math.random()*100)%(n);
 
         inputs.splice(inputs.indexOf(first.gate),1);
 
@@ -93,10 +93,13 @@ function makeCircuit(n){
         //remove the selected input from possible inputs
         inputs.splice(inputs.indexOf(gene.gate),1);
         //select random source from possible sources
-        gene.source = possibleSource[ parseInt(Math.random()*10000)%(possibleSource.length) ];
+        gene.source = possibleSource[ parseInt(Math.random()*100 +Math.random()*100 +Math.random()*100 + Math.random()*100 + Math.random()*100)%(possibleSource.length) ];
         //select random drain except for current source
-        
+
         gene.drain = anythingExcept( [gene.source] , n+1 );
+        if (possibleSource.indexOf(gene.drain) === -1) {
+            possibleSource.push(gene.drain);    
+        }
 
         chromosome.push(gene);
 
@@ -111,7 +114,7 @@ function checkValidity(circuit){
     for (var i = 0; i < circuit.length; i++) {
         
     	if(circuit[i].source > circuit[i].drain){
-    
+            
             return -1;
     	}
     }    
@@ -245,27 +248,40 @@ function getDuplicatePairs(circuit){
 }
 
 
+function getIndirectParellels(circuit){
+
+    var maxDrains = getMaxDrains(circuit)
+
+
+
+}
+
+function getTransitiveSet(circuit){
+
+}
+
+
 function makeBool(circuit){
 
-    var exp = "",input = 1;
     var dup = getDuplicatePairs(circuit)
+    var mods = getIndirectParellels(dup)
 
-    
-
+    return mods;
 }
 
     
 
-    var size = 3;
+    var size = 4;
     var c = makeCircuit(size)
-
+    var ll = 0;
     while(checkValidity(c) === -1 || checkConnectivity(c) === -1){
+        ll++;
         c = makeCircuit(size)
     }
 
     console.log(c)
-    console.log()
-    console.log(getDuplicatePairs(c))
+    console.log(ll)
+    //console.log(makeBool(c))
 
 
 
