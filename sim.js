@@ -325,7 +325,7 @@ function getOutputOf(circuit){
 
     
 
-    var size = 4;
+    var size = 3;
 
     
     var c = makeCircuit(size)
