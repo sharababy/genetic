@@ -1,4 +1,3 @@
-//yutikaLovesVedant.js
 
 'use strict'
 
@@ -121,7 +120,7 @@ function checkValidity(circuit){
     return 1;
 }
 
-function checkConnectivity(circuit){
+function getMaxDrains(circuit){
 
     var maxDrains = []
     var found = 0;
@@ -141,6 +140,13 @@ function checkConnectivity(circuit){
             break;
         }
     }
+
+    return maxDrains
+}
+
+function checkConnectivity(circuit){
+
+    var maxDrains = getMaxDrains(circuit)
 
     // console.log("Elements with max drain")
     // console.log(maxDrains);
@@ -195,16 +201,71 @@ function findInSource(drain , circuit){
     return path;
 }
 
+
+function findIn(array, element){
+    var location = [];
+    for (var i = 0; i < array.length; i++) {
+        if( array[i].drain === element.drain && array[i].source === element.source ){
+            location.push(i);
+        }
+    }
+
+    return location;
+}
+
+function existsIn(array, e){
+
+    for (var i = 0; i < array.length; i++) {
+        if(array[i] === e){
+            return 1
+        }
+    }
+
+    return 0;
+}   
+
+function getDuplicatePairs(circuit){
+
+    var counts = [];
+    var visited = [];
+
+    for (var i = 0; i < circuit.length; i++) {
+        
+        if( existsIn(visited , i) === 0){
+            var l = circuit[i]
+            l.location = findIn(circuit, circuit[i])
+            visited = visited.concat(l.location)
+            console.log(visited)
+            counts.push(l)
+        }
+
+    }
+
+
+    
+    return counts;
+}
+
+
+function makeBool(circuit){
+
+
+
+
+}
+
+
 //for(var i=0; i<10;i++){
         //console.log(checkValidity(makeCircuit(3)))
 //}
-    var c = makeCircuit(4)
+    var c = makeCircuit(3)
 
     while(checkValidity(c) === -1 || checkConnectivity(c) === -1){
-        c = makeCircuit(4)
+        c = makeCircuit(3)
     }
 
     console.log(c)
     console.log()
+    console.log(getDuplicatePairs(c))
 
 module.exports = {getInputTable}
