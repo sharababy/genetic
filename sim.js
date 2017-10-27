@@ -111,8 +111,7 @@ function checkValidity(circuit){
     for (var i = 0; i < circuit.length; i++) {
         
     	if(circuit[i].source > circuit[i].drain){
-    		console.log("invalid")
-
+    
             return -1;
     	}
     }    
@@ -235,7 +234,6 @@ function getDuplicatePairs(circuit){
             var l = circuit[i]
             l.location = findIn(circuit, circuit[i])
             visited = visited.concat(l.location)
-            console.log(visited)
             counts.push(l)
         }
 
@@ -254,18 +252,19 @@ function makeBool(circuit){
 
 }
 
+    
 
-//for(var i=0; i<10;i++){
-        //console.log(checkValidity(makeCircuit(3)))
-//}
-    var c = makeCircuit(3)
+    var size = 4;
+    var c = makeCircuit(size)
 
     while(checkValidity(c) === -1 || checkConnectivity(c) === -1){
-        c = makeCircuit(3)
+        c = makeCircuit(size)
     }
 
     console.log(c)
     console.log()
     console.log(getDuplicatePairs(c))
+
+
 
 module.exports = {getInputTable}
