@@ -97,6 +97,14 @@ function makeCircuit(n){
         //select random drain except for current source
 
         gene.drain = anythingExcept( [gene.source] , n+1 );
+
+        // eliminating the need for check validation function
+
+        while(gene.source > gene.drain){
+            gene.source = possibleSource[ parseInt(Math.random()*100 +Math.random()*100 +Math.random()*100)%(possibleSource.length) ];
+            gene.drain = anythingExcept( [gene.source] , n+1 );
+        }   
+
         if (possibleSource.indexOf(gene.drain) === -1) {
             possibleSource.push(gene.drain);    
         }
@@ -106,20 +114,6 @@ function makeCircuit(n){
     }
 
     return chromosome
-}
-
-
-function checkValidity(circuit){
-
-    for (var i = 0; i < circuit.length; i++) {
-        
-    	if(circuit[i].source > circuit[i].drain){
-            
-            return -1;
-    	}
-    }    
-
-    return 1;
 }
 
 function getMaxDrains(circuit){
@@ -248,40 +242,105 @@ function getDuplicatePairs(circuit){
 }
 
 
-function getIndirectParellels(circuit){
+function getGateLocation(circuit,gate){
 
-    var maxDrains = getMaxDrains(circuit)
+    for (var i = 0; i < circuit.length; i++) {
+        
+        if (circuit[i].gate === gate) {
+            return i
+        }
+    }
 
-
-
+    return -1
 }
 
-function getTransitiveSet(circuit){
 
+function getElemetsWithSource(circuit, startNode){
+
+    var elements = []; 
+    for (var i = 0; i < circuit.length; i++) {
+        if (circuit[i].source === startNode && circuit[i].eval === 1) {
+            elements.push(circuit[i])
+        }
+    }
+
+    return elements
 }
 
+function findOutputPathIn(circuit,startNode,endNode){
 
-function makeBool(circuit){
+    var elements = getElemetsWithSource(circuit,startNode)
+    var currentOp = 1;
+    if (elements.length === 0) {
+        return 0
+    }
 
-    var dup = getDuplicatePairs(circuit)
-    var mods = getIndirectParellels(dup)
+    for (var i = 0; i < elements.length; i++) {
+        
+        if (elements[i].drain === endNode) {
+            return 1
+        }
+        else if(elements[i].drain !== endNode){
+            var retVal = findOutputPathIn(circuit,elements[i].drain,endNode)
 
-    return mods;
+            if (retVal === 1) {
+                return 1
+            }
+            else if(retVal === 0){
+                currentOp = retVal
+            }
+        }   
+    }
+
+    return currentOp;
+}
+
+function getOutputOf(circuit){
+
+    var inputSet = getInputTable(circuit.length)
+    var copy = {};
+
+    for (var i = 0; i < inputSet.length; i++) {
+
+        copy = circuit
+        for (var j = 0; j < inputSet[i].length; j++) {
+            if (inputSet[i][j] === 0) {
+                copy[getGateLocation(copy,j)].eval = 0;
+            }
+            else{
+                copy[getGateLocation(copy,j)].eval = 1;   
+            }
+        }
+
+        // console.log(inputSet[i])
+        // console.log(copy)
+
+        var end = getMaxDrains(circuit)[0].drain
+        var output = findOutputPathIn(copy,0,end);
+
+        console.log(inputSet[i] , output)
+    }
+
 }
 
     
 
     var size = 4;
+
+    
     var c = makeCircuit(size)
     var ll = 0;
-    while(checkValidity(c) === -1 || checkConnectivity(c) === -1){
+    while(checkConnectivity(c) === -1){
         ll++;
         c = makeCircuit(size)
     }
 
     console.log(c)
     console.log(ll)
+    
     //console.log(makeBool(c))
+
+    getOutputOf(c)
 
 
 
