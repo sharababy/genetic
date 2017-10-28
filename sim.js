@@ -299,6 +299,7 @@ function getOutputOf(circuit){
 
     var inputSet = getInputTable(circuit.length)
     var copy = {};
+    var outputSet = [];
 
     for (var i = 0; i < inputSet.length; i++) {
 
@@ -323,25 +324,22 @@ function getOutputOf(circuit){
 
 }
 
-    
+function getCircuitOfSize(n){
 
-    var size = 3;
-
-    
-    var c = makeCircuit(size)
+    var c = makeCircuit(n)
     var ll = 0;
     while(checkConnectivity(c) === -1){
         ll++;
-        c = makeCircuit(size)
+        c = makeCircuit(n)
     }
+    //console.log(ll)
 
-    console.log(c)
-    console.log(ll)
+    return c
+}
     
-    //console.log(makeBool(c))
 
-    getOutputOf(c)
-
+getCircuitOfSize(4)
+getOutputOf(c)
 
 
 module.exports = {getInputTable}
