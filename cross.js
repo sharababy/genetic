@@ -35,10 +35,10 @@ Batch Structure
 ]
 */
 
-var tc = [ { gate: 2, source: 0, drain: 4 },
-  { gate: 0, source: 0, drain: 3 },
-  { gate: 3, source: 3, drain: 4 },
-  { gate: 1, source: 0, drain: 3 } ]
+var tc = [ { gate: 0, source: 0, drain: 1 },
+  { gate: 2, source: 1, drain: 2 },
+  { gate: 3, source: 0, drain: 1 },
+  { gate: 1, source: 0, drain: 1 } ]
 
 //var t = sim.getOutputOf(tc)
 
@@ -60,14 +60,15 @@ function mutate(circuit){
 
 	/*
 	two types of mutation are possible
-	0. take a parellel block and put it somewhere else
-	1. take the last series block and make a parellel block
+	0. take a parellel block and place it parellely elsewhere
+	1. take a parellel block and append it to the end of the circuit
+	2. take the last series block and make a parellel block
 	*/
 	var mIndex = -1;
-	var mType = 0/*parseInt(Math.random()*10)%2*/;
+	var mType = 1/*parseInt(Math.random()*10)%2*/;
 	
 
-	if (mType === 0) {
+	if (mType === 0 || mType === 1) {
 
 		
 		var c = sim.getDuplicatePairs(circuit)
@@ -85,14 +86,23 @@ function mutate(circuit){
 		if (mIndex != -1) {
 			var gateIndex = c[mIndex].location[1]
 			
-			var allNodes = sim.getAllNodes(circuit)
-
-			circuit[gateIndex].source = sim.selectRandomlyFrom(allNodes)
-			circuit[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
-
-			while(circuit[gateIndex].drain <= circuit[gateIndex].source){
+			if (mType == 0) {
+				var allNodes = sim.getAllNodes(circuit)
 				circuit[gateIndex].source = sim.selectRandomlyFrom(allNodes)
 				circuit[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
+
+				while(circuit[gateIndex].drain <= circuit[gateIndex].source){
+					circuit[gateIndex].source = sim.selectRandomlyFrom(allNodes)
+					circuit[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
+				}
+			}
+			else if(mType == 1){
+				var maxDrains = sim.getMaxDrains(circuit)
+
+				if (maxDrains[0].drain !== circuit.length) {
+					circuit[gateIndex].source = maxDrains[0].drain;
+					circuit[gateIndex].drain = circuit[gateIndex].source+1;
+				}
 			}
 		}
 

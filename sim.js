@@ -148,40 +148,50 @@ function checkConnectivity(circuit){
     // console.log("Elements with max drain")
     // console.log(maxDrains);
 
+    var paths = getDuplicatePairs(circuit)
+
     var start = 0 , end = maxDrains[0].drain;
 
-    return traverseCircuit(circuit, start, end)
 
+    for (var i = 0; i < paths.length; i++) {
 
+        var k = traverseCircuit(paths, circuit[i].source, end)
+
+        if (k == -1) {
+            return -1
+        }
+
+    }
+
+    return 1;
 }
     
 function traverseCircuit(circuit, start, end){
 
-    for (var i = 0; i < circuit.length; i++) {
-            
-        var e = circuit[i];
+        var e = findInSource(start , circuit);
 
-        if (e.drain !== end) {
+        if (e[0].drain !== end) {
             
-            var p = findInSource(e.drain , circuit)
+            var p = findInSource(e[0].drain , circuit)
 
             if (p.length === 0) {
+                //console.log("This 1 source: ",start," drain: ",e[0].drain)
                 return -1;
             }
             else{
-                var connection = traverseCircuit(p, p[0].source , end);
+                var connection = traverseCircuit(circuit, p[0].source , end);
 
                 if (connection === -1) {
+                    //console.log("This 2 source: ",start," drain: ",e.drain)
                     return -1;
                 }
             }
         }
         else{
-            continue
+            return 1;
         }
-    }
 
-    return 1;
+
 }
 
 function removeDuplicatesFrom(array){
@@ -404,4 +414,13 @@ function getBatch(n,size){
 //getOutputOf(c)
 
 
-module.exports = {checkConnectivity,getCircuitOfSize,getBatch,getOutputOf,getDuplicatePairs,getGateLocation,anythingExcept,getAllNodes,selectRandomlyFrom}
+// var t = [ 
+//     { gate: 0, source: 0, drain: 1 },
+//     { gate: 1, source: 0, drain: 1 },
+//     { gate: 2, source: 1, drain: 2 },
+//     { gate: 3, source: 1, drain: 3 },
+//     ]
+
+// console.log(checkConnectivity(t))
+
+module.exports = {getMaxDrains,checkConnectivity,getCircuitOfSize,getBatch,getOutputOf,getDuplicatePairs,getGateLocation,anythingExcept,getAllNodes,selectRandomlyFrom}
