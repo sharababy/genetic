@@ -358,4 +358,4 @@ function getBatch(n,size){
 //getOutputOf(c)
 
 
-module.exports = {getBatch}
+module.exports = {getBatch,getOutputOf}

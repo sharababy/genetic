@@ -36,19 +36,56 @@ Batch Structure
 */
 
 
+var t = sim.getOutputOf(
+		[{
+			gate:0 , source :0 ,drain:1
+		},
+		{
+			gate:1, source :0 ,drain:1
+		},
+		{
+			gate:2 , source :1 ,drain:2
+		},
+		{
+			gate:3 , source :2 ,drain:3
+		}]
+
+		)
+
+
 function getBatchFitness(batch){
 
-	for (var i = 0; i < batch.length; i++) {
+	var target = t;
 		
-		batch[i]
+	for (var i = 0; i < batch.length; i++) {
+		batch[i].score = fitness(batch[i].output , target)
 	}
-
+	return batch
 }
 
-var batch = sim.getBatch(1,2)
 
-console.log(batch)
+function mutatate(circuit){
 
+	
+}
+
+
+var batch = sim.getBatch(1000,4)
+
+var batchWithScores = getBatchFitness(batch)
+
+var max = 0;
+
+for (var i = 0; i < batchWithScores.length; i++) {
+	if (max < batchWithScores[i].score) {
+		max = batchWithScores[i].score
+	}
+	if (batchWithScores[i].score === 16) {
+		console.log(batchWithScores[i].circuit)	
+	}
+}	
+
+console.log(max)
 
 
 
