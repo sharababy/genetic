@@ -35,16 +35,25 @@ Batch Structure
 ]
 */
 
-var tc = [ 
-	{ gate: 0, source: 0, drain: 4 },
-	{ gate: 1, source: 0, drain: 1 },
-	{ gate: 2, source: 0, drain: 2 },
-	{ gate: 3, source: 1, drain: 3 },
-	{ gate: 4, source: 2, drain: 4 },
-	{ gate: 5, source: 2, drain: 3 },
-	{ gate: 6, source: 3, drain: 4 } ]
+// var tc = [ 
+// 	{ gate: 0, source: 0, drain: 4 },
+// 	{ gate: 1, source: 0, drain: 1 },
+// 	{ gate: 2, source: 0, drain: 2 },
+// 	{ gate: 3, source: 1, drain: 3 },
+// 	{ gate: 4, source: 2, drain: 4 },
+// 	{ gate: 5, source: 2, drain: 3 },
+// 	{ gate: 6, source: 3, drain: 4 } ]
 
-var t = sim.getOutputOf(tc)
+// var tc = [ 
+// 	{ gate: 0, source: 0, drain: 4 },
+// 	{ gate: 1, source: 0, drain: 1 },
+// 	{ gate: 2, source: 0, drain: 2 },
+// 	{ gate: 3, source: 1, drain: 3 },
+// 	]
+
+
+
+//var t = sim.getOutputOf(tc)
 
 
 function getBatchFitness(batch){
@@ -188,13 +197,18 @@ function achieveTarget(t , iterations , rounds){
 	return batch[index];
 }
 
-var best;
+function startEvolution(t){
 
-do{
-	best = achieveTarget(t , 3000 , 30)
-	console.log(best.score)
-}while(best.score != t.length)
+	var best;
+	do{
+		best = achieveTarget(t , 3000 , 30)
+		console.log(best.score)
+	}while(best.score != t.length)
 
-console.log(best.circuit)
+	console.log(best.circuit)
+
+	return best.circuit
+}
 
 
+module.exports = {startEvolution}
