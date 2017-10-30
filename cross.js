@@ -36,11 +36,11 @@ Batch Structure
 */
 
 var tc = [ { gate: 0, source: 0, drain: 1 },
+  { gate: 1, source: 1, drain: 2 },
   { gate: 2, source: 1, drain: 2 },
-  { gate: 3, source: 0, drain: 1 },
-  { gate: 1, source: 0, drain: 1 } ]
+  { gate: 3, source: 2, drain: 3 } ]
 
-//var t = sim.getOutputOf(tc)
+var t = sim.getOutputOf(tc)
 
 
 function getBatchFitness(batch){
@@ -65,7 +65,7 @@ function mutate(circuit){
 	2. take the last series block and make a parellel block
 	*/
 	var mIndex = -1;
-	var mType = 1/*parseInt(Math.random()*10)%2*/;
+	var mType = parseInt(Math.random()*100 + Math.random()*10)%2;
 	
 
 	if (mType === 0 || mType === 1) {
@@ -73,7 +73,7 @@ function mutate(circuit){
 		
 		var c = sim.getDuplicatePairs(circuit)
 
-		console.log(c)
+		//console.log(c)
 		
 		for (var i = 0; i < c.length; i++) {
 			
@@ -118,14 +118,6 @@ function mutate(circuit){
 }
 
 
-//var x = sim.getCircuitOfSize(4)
-
-console.log(tc)
-tc = mutate(tc)
-console.log(sim.checkConnectivity(tc))
-console.log(tc)
-
-
 
 // var batch = sim.getBatch(100000,4)
 
@@ -146,7 +138,57 @@ console.log(tc)
 
 
 
+function achieveTarget(t , iterations , rounds){
 
+	var batch = []
 
+	for (var j = 0; j < iterations; j++) {
+			
+		var sample = {}
+		sample.id = j;
+		sample.circuit = sim.getCircuitOfSize(parseInt(Math.log2(t.length)))
+		sample.output = sim.getOutputOf(sample.circuit)
+		sample.score = fitness(sample.output , t)
+
+		batch.push(sample)
+	}
+
+	for (var i = 0; i < rounds-1; i++) {
+		
+		for (var j = 0; j < iterations; j++) {
+			
+			var sample = {}
+			sample.id = (iterations*(i+1))+j;
+			sample.circuit = mutate(batch[(iterations*i)+j].circuit)
+			sample.output = sim.getOutputOf(sample.circuit)
+			sample.score = fitness(sample.output , t)
+
+			batch.push(sample)
+		}
+
+	}
+
+	var max = -1;
+	var index = -1;
+
+	for (var i = 0; i < rounds*iterations; i++) {
+		
+		if (batch[i].score > max) {
+			max = batch[i].score
+			index = i;
+		}
+	}
+
+	//console.log(batch)
+	
+	return batch[index];
+}
+
+var best;
+
+do{
+	best = achieveTarget(t , 10 , 2)
+	console.log(best)
+}while(best.score != t.length)
 
 

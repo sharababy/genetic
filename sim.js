@@ -274,7 +274,7 @@ function getDuplicatePairs(circuit){
 
     var counts = [];
     var visited = [];
-    var original = circuit.slice();
+    var original = circuit;
 
     for (var i = 0; i < circuit.length; i++) {
         
