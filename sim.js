@@ -319,9 +319,11 @@ function getOutputOf(circuit){
         var end = getMaxDrains(circuit)[0].drain
         var output = findOutputPathIn(copy,0,end);
 
-        console.log(inputSet[i] , output)
+        //console.log(inputSet[i] , output)
+        outputSet.push(output)
     }
 
+    return outputSet
 }
 
 function getCircuitOfSize(n){
@@ -338,8 +340,22 @@ function getCircuitOfSize(n){
 }
     
 
-getCircuitOfSize(4)
-getOutputOf(c)
+function getBatch(n,size){
+
+    var batch = [];
+    for (var i = 0; i < n; i++) {
+        var sample = {}
+        sample.circuit = getCircuitOfSize(size)
+        sample.output = getOutputOf(sample.circuit)        
+        batch.push(sample)
+    }
+
+    return batch
+}
+
+//var c = getCircuitOfSize(15)
+//console.log(c)
+//getOutputOf(c)
 
 
-module.exports = {getInputTable}
+module.exports = {getBatch}
