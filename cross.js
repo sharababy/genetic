@@ -64,9 +64,9 @@ function getBatchFitness(batch){
 }
 
 
-function mutatate(circuit){
+function mutate(circuit){
 
-	
+
 }
 
 
