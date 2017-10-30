@@ -32,10 +32,11 @@ function anythingExcept(array,max){
     return random;
 }
 
+
+
 function selectRandomlyFrom(array){
 
-    var index = parseInt(Math.random()*10000)%(array.length);
-
+    var index = parseInt(Math.random()*100 + Math.random()*100+ Math.random()*100)%(array.length);
     return array[index];
 }
 
@@ -183,6 +184,45 @@ function traverseCircuit(circuit, start, end){
     return 1;
 }
 
+function removeDuplicatesFrom(array){
+
+    var distinct = [],repeated = 0;
+
+    distinct.push(array[0])
+
+    for (var i = 1; i < array.length; i++) {
+        for (var j = i-1; j >= 0 ; j--) {
+            
+            if (array[i] === array[j]) {
+                repeated = 1;
+                break;
+            }
+        }
+
+        if (repeated === 0) {
+            distinct.push(array[i])
+        }
+        repeated = 0;
+    }
+
+    return distinct
+}
+
+
+
+function getAllNodes(circuit){
+
+    var nodes = [];
+
+    for (var i = 0; i < circuit.length; i++) {
+        nodes.push(circuit[i].source)
+        nodes.push(circuit[i].drain)
+    }
+    nodes = removeDuplicatesFrom(nodes)
+
+    return nodes;
+}
+
 function findInSource(drain , circuit){
 
     var path = [];
@@ -209,7 +249,7 @@ function findIn(array, element){
     return location;
 }
 
-function existsIn(array, e){
+function existsIn(array, e ){
 
     for (var i = 0; i < array.length; i++) {
         if(array[i] === e){
@@ -224,19 +264,25 @@ function getDuplicatePairs(circuit){
 
     var counts = [];
     var visited = [];
+    var original = circuit.slice();
 
     for (var i = 0; i < circuit.length; i++) {
         
         if( existsIn(visited , i) === 0){
-            var l = circuit[i]
-            l.location = findIn(circuit, circuit[i])
+            var l = Object.assign({},original[i])
+            l.location = findIn(original, original[i])
             visited = visited.concat(l.location)
             counts.push(l)
         }
 
     }
 
-
+    /*
+    Sample Output:
+    [ { gate: 0, source: 0, drain: 1, location: [ 0, 1 ] },
+      { gate: 2, source: 1, drain: 2, location: [ 2 ] },
+      { gate: 3, source: 2, drain: 3, location: [ 3 ] } ]
+    */
     
     return counts;
 }
@@ -358,4 +404,4 @@ function getBatch(n,size){
 //getOutputOf(c)
 
 
-module.exports = {getBatch,getOutputOf}
+module.exports = {checkConnectivity,getCircuitOfSize,getBatch,getOutputOf,getDuplicatePairs,getGateLocation,anythingExcept,getAllNodes,selectRandomlyFrom}
