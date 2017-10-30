@@ -35,10 +35,14 @@ Batch Structure
 ]
 */
 
-var tc = [ { gate: 0, source: 0, drain: 1 },
-  { gate: 1, source: 1, drain: 2 },
-  { gate: 2, source: 1, drain: 2 },
-  { gate: 3, source: 2, drain: 3 } ]
+var tc = [ 
+	{ gate: 0, source: 0, drain: 4 },
+	{ gate: 1, source: 0, drain: 1 },
+	{ gate: 2, source: 0, drain: 2 },
+	{ gate: 3, source: 1, drain: 3 },
+	{ gate: 4, source: 2, drain: 4 },
+	{ gate: 5, source: 2, drain: 3 },
+	{ gate: 6, source: 3, drain: 4 } ]
 
 var t = sim.getOutputOf(tc)
 
@@ -187,8 +191,10 @@ function achieveTarget(t , iterations , rounds){
 var best;
 
 do{
-	best = achieveTarget(t , 10 , 2)
-	console.log(best)
+	best = achieveTarget(t , 3000 , 30)
+	console.log(best.score)
 }while(best.score != t.length)
+
+console.log(best.circuit)
 
 
