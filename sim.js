@@ -417,6 +417,9 @@ function getBatch(n,size){
 // var t = [ 
 //     { gate: 0, source: 0, drain: 1 },
 //     { gate: 1, source: 0, drain: 1 },
+//     { gate: 2, source: 1, drain: 3 },
+//     { gate: 3, source: 1, drain: 2 },
+//     { gate: 4, source: 2, drain: 3 },
 //     ]
 
 // console.log(getOutputOf(t))
