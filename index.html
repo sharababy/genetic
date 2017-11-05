@@ -4,11 +4,33 @@
 		
 		<title>Evolution of Gateless VLSI Design</title>
 
+
+		<script type="text/javascript" src="jquery.min.js"></script>
+
 	</head>
 
 	<body>
 		<h2>Please enter the truth table:
-		<input type="text" name="truthtable">
+		<input type="text" name="truthtable" id="truthtable" value="0001">
+			<button onclick="return send()">Construct Circuit</button>
 
+		<script type="text/javascript">
+			function send(){
+				var truthtable = $("#truthtable").val();
+
+				console.log("Input: ",truthtable)
+
+				$.get("/="+truthtable, function(data, status){
+					var d = JSON.parse(data)
+			        //console.log("Data: " + data + "\nStatus: " + status);
+			       	
+			       	console.log(d)
+			       	
+
+			    });
+
+				return false
+			}
+		</script>
 	</body>
 </html>

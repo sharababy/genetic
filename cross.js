@@ -202,13 +202,15 @@ function startEvolution(t){
 	var best;
 	do{
 		best = achieveTarget(t , 3000 , 30)
-		console.log(best.score)
+		console.log("score:",best.score)
 	}while(best.score != t.length)
 
-	console.log(best.circuit)
+	console.log("Best Circuit:",best.circuit)
 
 	return best.circuit
 }
 
+
+//startEvolution(t)
 
 module.exports = {startEvolution}

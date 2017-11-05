@@ -417,10 +417,8 @@ function getBatch(n,size){
 // var t = [ 
 //     { gate: 0, source: 0, drain: 1 },
 //     { gate: 1, source: 0, drain: 1 },
-//     { gate: 2, source: 1, drain: 2 },
-//     { gate: 3, source: 1, drain: 3 },
 //     ]
 
-// console.log(checkConnectivity(t))
+// console.log(getOutputOf(t))
 
 module.exports = {getMaxDrains,checkConnectivity,getCircuitOfSize,getBatch,getOutputOf,getDuplicatePairs,getGateLocation,anythingExcept,getAllNodes,selectRandomlyFrom}
