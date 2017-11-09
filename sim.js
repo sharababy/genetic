@@ -326,7 +326,7 @@ function getElemetsWithSource(circuit, startNode){
 function findOutputPathIn(circuit,startNode,endNode){
 
     var elements = getElemetsWithSource(circuit,startNode)
-    var currentOp = 1;
+    var currentOp = 1; // current output
     if (elements.length === 0) {
         return 0
     }
@@ -334,12 +334,14 @@ function findOutputPathIn(circuit,startNode,endNode){
     for (var i = 0; i < elements.length; i++) {
         
         if (elements[i].drain === endNode) {
+            
             return 1
         }
         else if(elements[i].drain !== endNode){
             var retVal = findOutputPathIn(circuit,elements[i].drain,endNode)
 
             if (retVal === 1) {
+                
                 return 1
             }
             else if(retVal === 0){
@@ -372,7 +374,8 @@ function getOutputOf(circuit){
         // console.log(inputSet[i])
         // console.log(copy)
 
-        var end = getMaxDrains(circuit)[0].drain
+        var end = getMaxDrains(circuit)[0].drain;
+
         var output = findOutputPathIn(copy,0,end);
 
         //console.log(inputSet[i] , output)
@@ -416,11 +419,11 @@ function getBatch(n,size){
 
 // var t = [ 
 //     { gate: 0, source: 0, drain: 1 },
-//     { gate: 1, source: 0, drain: 1 },
+//     { gate: 1, source: 1, drain: 2 }
 //     { gate: 2, source: 1, drain: 3 },
 //     { gate: 3, source: 1, drain: 2 },
 //     { gate: 4, source: 2, drain: 3 },
-//     ]
+//      ]
 
 // console.log(getOutputOf(t))
 
