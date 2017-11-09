@@ -4,15 +4,30 @@
 		
 		<title>Evolution of Gateless VLSI Design</title>
 
-
+		<script type="text/javascript" src="transistor.js"></script>
 		<script type="text/javascript" src="jquery.min.js"></script>
 
+		<style>
+			#circuit{
+				border:1px solid #000;
+				margin:10px;
+			}
+			body{
+				display: block;
+			}
+		</style>
 	</head>
 
 	<body>
-		<h2>Please enter the truth table:
-		<input type="text" name="truthtable" id="truthtable" value="0001">
-			<button onclick="return send()">Construct Circuit</button>
+		<h2>Please enter the truth table:</h2>
+		<input type="text" name="truthtable" id="truthtable" value="0001" />
+		<button onclick="return send()">Construct Circuit</button>
+		<br/> 
+		<canvas id="circuit" width="500px" height="500px">
+
+		</canvas>
+		
+
 
 		<script type="text/javascript">
 			function send(){
@@ -26,11 +41,15 @@
 			       	
 			       	console.log(d)
 			       	
+			       		
 
 			    });
 
 				return false
 			}
+
+			makeCircuit(0,0,1,1)
+
 		</script>
 	</body>
 </html>
