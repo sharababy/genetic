@@ -424,4 +424,5 @@ function getBatch(n,size){
 
 // console.log(getOutputOf(t))
 
+
 module.exports = {getMaxDrains,checkConnectivity,getCircuitOfSize,getBatch,getOutputOf,getDuplicatePairs,getGateLocation,anythingExcept,getAllNodes,selectRandomlyFrom}

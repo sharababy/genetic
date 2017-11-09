@@ -51,10 +51,15 @@ Batch Structure
 // 	{ gate: 3, source: 1, drain: 3 },
 // 	]
 
+var tc = [ 
+	{ gate: 0, source: 0, drain: 2 },
+	{ gate: 1, source: 0, drain: 2 },
+	]
 
 
-//var t = sim.getOutputOf(tc)
+var t = sim.getOutputOf(tc)
 
+console.log(t);
 
 function getBatchFitness(batch){
 
@@ -132,24 +137,6 @@ function mutate(circuit){
 
 
 
-// var batch = sim.getBatch(100000,4)
-
-// var batchWithScores = getBatchFitness(batch)
-
-// var max = 0;
-
-// for (var i = 0; i < batchWithScores.length; i++) {
-// 	if (max < batchWithScores[i].score) {
-// 		max = batchWithScores[i].score
-// 	}
-// 	if (batchWithScores[i].score === 16) {
-// 		console.log(batchWithScores[i].circuit)	
-// 	}
-// }	
-
-// console.log(max)
-
-
 
 function achieveTarget(t , iterations , rounds){
 
@@ -211,6 +198,8 @@ function startEvolution(t){
 }
 
 
-//startEvolution(t)
+startEvolution(t)
+
+//startEvolution()
 
 module.exports = {startEvolution}

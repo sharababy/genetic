@@ -2,35 +2,103 @@ function makeCircuit(circuit){
 
 			var canvas = document.getElementById("circuit");
 			var ctx = canvas.getContext("2d");
+
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 			ctx.beginPath();
-			ctx.moveTo(235,30);
-			ctx.lineTo(265,30);
-			ctx.moveTo(250,30);
-			ctx.lineTo(250,80); // T formation
+			ctx.moveTo(285,10);
+			ctx.lineTo(315,10);
+			ctx.moveTo(300,10);
+			ctx.lineTo(300,30); // T formation
+
+
+			makeTransistor(ctx,260,30,1)  // must pmos
+
+			ctx.moveTo(300,80); // output line
+			ctx.lineTo(390,80);
+			ctx.moveTo(300,80); // mid axis
+			ctx.lineTo(300,100); // input starts 
+
+			makeTransistor(ctx,260,510,2) // must nmos
+
+
+
 
 			/*
 				distance between nodes : height of transistor = 50
 				width of transistor = 40
+
+				input starts at 300,100
+				input can end at 300,510
+
+				circuit height = 410
+
 			*/
+			var nodalDistance = parseInt(410/(circuit.length));
 
-			makeTransistor(ctx,10,10)
+			circuit.sort(
+				function(e1,e2){
 
+					return (e1.drain - e1.source)-(e2.drain - e2.source)
+				}
+				)
 
-			ctx.moveTo(250,420); // the ground symbol
-			ctx.lineTo(250,440); 
-			ctx.moveTo(240,440);
-			ctx.lineTo(260,440);
-			ctx.moveTo(243,445);
-			ctx.lineTo(257,445);
-			ctx.moveTo(246,450);
-			ctx.lineTo(254,450);
+			console.log(circuit);
+
+			var depth = 0;
+			var depthCount = 1;			
+
+			for (var i = 0; i < circuit.length; i++) {
+				
+				var startY = circuit[i].source * nodalDistance;
+				var endY = circuit[i].drain * nodalDistance;
+
+				if ((circuit[i].drain - circuit[i].source ) > 1) {
+					depth = depthCount * 45;
+					depthCount++;
+				}
+
+				makeWiredTransistor(ctx,2,depth,100+startY,100+endY,nodalDistance)
+
+				depth = 0;
+			}
+
+			ctx.moveTo(300,560); // the ground symbol
+			ctx.lineTo(300,580); 
+			ctx.moveTo(290,580);
+			ctx.lineTo(310,580);
+			ctx.moveTo(293,585);
+			ctx.lineTo(307,585);
+			ctx.moveTo(296,590);
+			ctx.lineTo(304,590);
 
 			ctx.stroke();
 
 }
 
 
-function makeTransistor(ctx,x,y){
+function makeWiredTransistor(ctx, type, depth, startY, endY, nodalDistance){
+
+	
+	ctx.moveTo(300,startY); // depth line horizontal
+	ctx.lineTo(300-depth,startY);
+	
+	makeTransistor(ctx, 300-depth-40, startY, type);
+
+	ctx.moveTo(300-depth, startY+50); // after line vertical
+	ctx.lineTo(300-depth,endY);
+
+	ctx.lineTo(300,endY); // after line horizontal
+
+
+
+}
+
+
+// type 1 = pmos
+// type 2 = nmos
+
+function makeTransistor(ctx,x,y,type){
 	
 
 	ctx.moveTo((x+40),(y+0)); // start line
@@ -44,8 +112,23 @@ function makeTransistor(ctx,x,y){
 	ctx.moveTo((x+18),(y+10)); // topper line for n-mos 1
 	ctx.lineTo((x+18),(y+40));
 
-	ctx.moveTo((x+18),(y+25)); // perpendicular line in nmos 1
-	ctx.lineTo((x+0),(y+25));
+	if (type === 2) {
+		ctx.moveTo((x+18),(y+25)); // perpendicular line in nmos 1
+		ctx.lineTo((x+0),(y+25));
+	
+	}
+	else if(type === 1){
+		ctx.moveTo((x+12),(y+25)); // perpendicular line in nmos 1
+		ctx.lineTo((x+0),(y+25));
+		
+		ctx.moveTo(x+18,y+25);
+		ctx.arc(x+15,y+25,3,0,2*Math.PI);
+			
+	}
 
+	
 			
 }
+
+
+

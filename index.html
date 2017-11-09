@@ -23,13 +23,19 @@
 		<input type="text" name="truthtable" id="truthtable" value="0001" />
 		<button onclick="return send()">Construct Circuit</button>
 		<br/> 
-		<canvas id="circuit" width="500px" height="500px">
+		<canvas id="circuit" width="600px" height="600px">
 
 		</canvas>
 		
 
 
 		<script type="text/javascript">
+
+			/*
+				sample Input:
+				0101010101010101
+			*/
+
 			function send(){
 				var truthtable = $("#truthtable").val();
 
@@ -39,16 +45,16 @@
 					var d = JSON.parse(data)
 			        //console.log("Data: " + data + "\nStatus: " + status);
 			       	
-			       	console.log(d)
+			       	//console.log(d)
 			       	
-			       		
+			       	makeCircuit(d)
 
 			    });
 
 				return false
 			}
 
-			makeCircuit(0,0,1,1)
+			
 
 		</script>
 	</body>
