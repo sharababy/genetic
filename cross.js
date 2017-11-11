@@ -1,7 +1,7 @@
 //cross.js
 
 var sim = require('./sim.js')
-
+const util = require('util')
 
 
 function fitness(actual , target){
@@ -51,16 +51,6 @@ Batch Structure
 // 	{ gate: 3, source: 1, drain: 3 },
 // 	]
 
-var tc = [ 
-	{ gate: 0, source: 0, drain: 2 },
-	{ gate: 1, source: 0, drain: 2 },
-	]
-
-
-var t = sim.getOutputOf(tc)
-
-console.log(t);
-
 function getBatchFitness(batch){
 
 	var target = t;
@@ -84,12 +74,15 @@ function mutate(circuit){
 	*/
 	var mIndex = -1;
 	var mType = parseInt(Math.random()*100 + Math.random()*10)%2;
-	
+		
+	var mutant = Object.assign({},circuit);
 
 	if (mType === 0 || mType === 1) {
 
 		
-		var c = sim.getDuplicatePairs(circuit)
+		var c = sim.getDuplicatePairs(mutant)
+
+
 
 		//console.log(c)
 		
@@ -105,26 +98,26 @@ function mutate(circuit){
 			var gateIndex = c[mIndex].location[1]
 			
 			if (mType == 0) {
-				var allNodes = sim.getAllNodes(circuit)
-				circuit[gateIndex].source = sim.selectRandomlyFrom(allNodes)
-				circuit[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
+				var allNodes = sim.getAllNodes(mutant)
+				mutant[gateIndex].source = sim.selectRandomlyFrom(allNodes)
+				mutant[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
 
-				while(circuit[gateIndex].drain <= circuit[gateIndex].source){
-					circuit[gateIndex].source = sim.selectRandomlyFrom(allNodes)
-					circuit[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
+				while(mutant[gateIndex].drain <= mutant[gateIndex].source){
+					mutant[gateIndex].source = sim.selectRandomlyFrom(allNodes)
+					mutant[gateIndex].drain = sim.selectRandomlyFrom(allNodes)
 				}
 			}
 			else if(mType == 1){
-				var maxDrains = sim.getMaxDrains(circuit)
+				var maxDrains = sim.getMaxDrains(mutant)
 
-				if (maxDrains[0].drain !== circuit.length) {
-					circuit[gateIndex].source = maxDrains[0].drain;
-					circuit[gateIndex].drain = circuit[gateIndex].source+1;
+				if (maxDrains[0].drain !== mutant.length) {
+					mutant[gateIndex].source = maxDrains[0].drain;
+					mutant[gateIndex].drain = mutant[gateIndex].source+1;
 				}
 			}
 		}
 
-		return circuit
+		return mutant
 		
 	}
 
@@ -141,18 +134,25 @@ function mutate(circuit){
 function achieveTarget(t , iterations , rounds){
 
 	var batch = []
+	var initSample;
 
 	for (var j = 0; j < iterations; j++) {
 			
-		var sample = {}
-		sample.id = j;
-		sample.circuit = sim.getCircuitOfSize(parseInt(Math.log2(t.length)))
-		sample.output = sim.getOutputOf(sample.circuit)
-		sample.score = fitness(sample.output , t)
+		initSample = {}
+		initSample.id = j;
+		initSample.circuit = sim.getCircuitOfSize(parseInt(Math.log2(t.length)))
+		initSample.output = sim.getOutputOf(initSample.circuit)
+		initSample.score = fitness(initSample.output , t)
 
-		console.log(sample)
+		batch.push(initSample)
 
-		batch.push(sample)
+		// console.log(initSample.circuit);
+		// console.log()
+		// console.log(initSample);
+		// console.log()
+		// console.log()
+
+		
 	}
 
 	for (var i = 0; i < rounds-1; i++) {
@@ -165,9 +165,9 @@ function achieveTarget(t , iterations , rounds){
 			sample.output = sim.getOutputOf(sample.circuit)
 			sample.score = fitness(sample.output , t)
 
-			console.log(sample)
-			console.log("Connectivity: ",sim.checkConnectivity(sample.circuit))
-			console.log("Sample Circuit: ",sample.circuit)
+			//console.log(sample)
+			// console.log("Connectivity: ",sim.checkConnectivity(sample.circuit))
+			// console.log("Sample Circuit: ",sample.circuit)
 
 			batch.push(sample)
 		}
@@ -179,13 +179,18 @@ function achieveTarget(t , iterations , rounds){
 
 	for (var i = 0; i < rounds*iterations; i++) {
 		
-		if (batch[i].score >= max) {
+		if (batch[i].score > max) {
 			max = batch[i].score
 			index = i;
 		}
 	}
 
-	console.log("Index: ",index);
+	
+	//console.log("Index: ",index);
+
+	//console.log(util.inspect(batch, false, null))
+
+
 	
 	return batch[index];
 }
@@ -194,21 +199,30 @@ function startEvolution(t){
 
 	var best;
 	do{
-		best = achieveTarget(t , 3 , 4)
-		console.log("score:",best.score)
+		best = achieveTarget(t , 5 , 3)
+		console.log("Best Score:",best.score)
 	}while(best.score != t.length)
 
 	console.log("Best Circuit:",best)
 
-	console.log(sim.getOutputOf(best.circuit))
+	//console.log(sim.getOutputOf(best.circuit))
 
 
 	return best.circuit
 }
 
+// var tc = [ 
+// 	{ gate: 0, source: 0, drain: 2 },
+// 	{ gate: 1, source: 0, drain: 2 },
+// 	]
 
-startEvolution(t)
 
-//startEvolution()
+// var t = sim.getOutputOf(tc)
+
+// console.log(t);
+
+
+//startEvolution(t)
+
 
 module.exports = {startEvolution}

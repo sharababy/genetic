@@ -170,13 +170,6 @@ function checkConnectivity(circuit){
 
     return 1;
 }
-    
-
-var t =[{ gate: 0, source: 0, drain: 1, eval: 1 },
-        { gate: 1, source: 0, drain: 1, eval: 1 } 
-        ]
-
-console.log(checkConnectivity(t))
 
 
 function traverseCircuit(paths, index ,start, end,circuit){
@@ -428,15 +421,21 @@ function getBatch(n,size){
 //getOutputOf(c)
 
 
-// var t = [ 
-//     { gate: 0, source: 0, drain: 1 },
-//     { gate: 1, source: 1, drain: 2 }
-//     { gate: 2, source: 1, drain: 3 },
-//     { gate: 3, source: 1, drain: 2 },
-//     { gate: 4, source: 2, drain: 3 },
-//      ]
+// var t =  [ { gate: 1, source: 0, drain: 1, eval: 1 },
+//        { gate: 0, source: 0, drain: 1, eval: 1 },
+//        { gate: 2, source: 1, drain: 2, eval: 1 },
+//        { gate: 3, source: 2, drain: 3, eval: 1 },
+//        { gate: 4, source: 2, drain: 3, eval: 1 } ]
+
+// var t =[ { gate: 2, source: 0, drain: 3, eval: 1 },
+//      { gate: 4, source: 3, drain: 4, eval: 1 },
+//      { gate: 1, source: 4, drain: 5, eval: 1 },
+//      { gate: 0, source: 4, drain: 5, eval: 1 },
+//      { gate: 3, source: 3, drain: 5, eval: 1 } ];
 
 // console.log(getOutputOf(t))
+
+
 
 
 module.exports = {getMaxDrains,checkConnectivity,getCircuitOfSize,getBatch,getOutputOf,getDuplicatePairs,getGateLocation,anythingExcept,getAllNodes,selectRandomlyFrom}
