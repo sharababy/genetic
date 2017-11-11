@@ -145,6 +145,8 @@ function checkConnectivity(circuit){
 
     var maxDrains = getMaxDrains(circuit)
 
+
+
     // console.log("Elements with max drain")
     // console.log(maxDrains);
 
@@ -152,38 +154,47 @@ function checkConnectivity(circuit){
 
     var start = 0 , end = maxDrains[0].drain;
 
-
     for (var i = 0; i < paths.length; i++) {
 
-        var k = traverseCircuit(paths, circuit[i].source, end)
+        if (circuit[i].source === 0) {
 
-        if (k == -1) {
-            return -1
+            var k = traverseCircuit(paths,i ,circuit[i].source, end,circuit)
+
+            if (k == -1) {
+                return -1
+            }
+    
         }
-
+        
     }
 
     return 1;
 }
     
-function traverseCircuit(circuit, start, end){
 
-        var e = findInSource(start , circuit);
+var t =[{ gate: 0, source: 0, drain: 1, eval: 1 },
+        { gate: 1, source: 0, drain: 1, eval: 1 } 
+        ]
 
-        if (e[0].drain !== end) {
+console.log(checkConnectivity(t))
+
+
+function traverseCircuit(paths, index ,start, end,circuit){
+
+        if (paths[index].drain !== end) {
             
-            var p = findInSource(e[0].drain , circuit)
+            var p = findInSource(paths[index].drain , circuit)
 
             if (p.length === 0) {
                 //console.log("This 1 source: ",start," drain: ",e[0].drain)
                 return -1;
             }
             else{
-                var connection = traverseCircuit(circuit, p[0].source , end);
+                for (var i = 0; i < p.length; i++) {
 
-                if (connection === -1) {
-                    //console.log("This 2 source: ",start," drain: ",e.drain)
-                    return -1;
+                    var connection = traverseCircuit(p, i ,p[i].source , end , circuit);
+
+                    return connection;
                 }
             }
         }

@@ -150,6 +150,8 @@ function achieveTarget(t , iterations , rounds){
 		sample.output = sim.getOutputOf(sample.circuit)
 		sample.score = fitness(sample.output , t)
 
+		console.log(sample)
+
 		batch.push(sample)
 	}
 
@@ -163,6 +165,10 @@ function achieveTarget(t , iterations , rounds){
 			sample.output = sim.getOutputOf(sample.circuit)
 			sample.score = fitness(sample.output , t)
 
+			console.log(sample)
+			console.log("Connectivity: ",sim.checkConnectivity(sample.circuit))
+			console.log("Sample Circuit: ",sample.circuit)
+
 			batch.push(sample)
 		}
 
@@ -173,13 +179,13 @@ function achieveTarget(t , iterations , rounds){
 
 	for (var i = 0; i < rounds*iterations; i++) {
 		
-		if (batch[i].score > max) {
+		if (batch[i].score >= max) {
 			max = batch[i].score
 			index = i;
 		}
 	}
 
-	//console.log(batch)
+	console.log("Index: ",index);
 	
 	return batch[index];
 }
@@ -188,11 +194,14 @@ function startEvolution(t){
 
 	var best;
 	do{
-		best = achieveTarget(t , 3000 , 30)
+		best = achieveTarget(t , 3 , 4)
 		console.log("score:",best.score)
 	}while(best.score != t.length)
 
-	console.log("Best Circuit:",best.circuit)
+	console.log("Best Circuit:",best)
+
+	console.log(sim.getOutputOf(best.circuit))
+
 
 	return best.circuit
 }
