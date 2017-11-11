@@ -35,6 +35,10 @@ function makeCircuit(circuit){
 
 			*/
 			var nodalDistance = parseInt(410/(circuit.length));
+			var unitDepths = [];
+			for (var i = 0; i < circuit.length; i++) {
+				unitDepths[i] = 0;
+			}
 
 			circuit.sort(
 				function(e1,e2){
@@ -57,8 +61,13 @@ function makeCircuit(circuit){
 					depth = depthCount * 45;
 					depthCount++;
 				}
+				else if((circuit[i].drain - circuit[i].source ) == 1){
+					depth = unitDepths[circuit[i].source]
+					unitDepths[circuit[i].source] += 45;
+					console.log(circuit[i].source,unitDepths,depth);
+				}
 
-				makeWiredTransistor(ctx,2,depth,100+startY,100+endY,nodalDistance)
+				makeWiredTransistor(ctx,2,depth,100+startY,90+endY,nodalDistance)
 
 				depth = 0;
 			}
@@ -89,7 +98,7 @@ function makeWiredTransistor(ctx, type, depth, startY, endY, nodalDistance){
 	ctx.lineTo(300-depth,endY);
 
 	ctx.lineTo(300,endY); // after line horizontal
-
+	ctx.lineTo(300,endY+10) // small connection line
 
 
 }
