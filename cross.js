@@ -199,8 +199,10 @@ function startEvolution(t){
 
 	var best;
 	do{
-		best = achieveTarget(t , 5 , 3)
+		best = achieveTarget(t , 12000 , 60)
 		console.log("Best Score:",best.score)
+
+		console.log("Best Circuit:",best.circuit)
 	}while(best.score != t.length)
 
 	console.log("Best Circuit:",best)
@@ -216,10 +218,21 @@ function startEvolution(t){
 // 	{ gate: 1, source: 0, drain: 2 },
 // 	]
 
+// var tc =[ 
+// 		{ gate: 0, source: 0, drain: 2, eval: 1 },
+// 		{ gate: 1, source: 0, drain: 4, eval: 1 },
+// 		{ gate: 2, source: 2, drain: 4, eval: 1 },
+// 		{ gate: 3, source: 2, drain: 4, eval: 1 },
+// 		{ gate: 4, source: 2, drain: 6, eval: 1 },
+// 		{ gate: 5, source: 4, drain: 6, eval: 1 },
+// 		{ gate: 6, source: 4, drain: 7, eval: 1 },
+// 		{ gate: 7, source: 6, drain: 7, eval: 1 } ];
 
-// var t = sim.getOutputOf(tc)
 
-// console.log(t);
+
+//  var t = sim.getOutputOf(tc)
+
+// console.log(JSON.stringify(t))
 
 
 //startEvolution(t)

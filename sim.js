@@ -1,4 +1,3 @@
-
 'use strict'
 
 function getInputTable(n){
@@ -427,13 +426,18 @@ function getBatch(n,size){
 //        { gate: 3, source: 2, drain: 3, eval: 1 },
 //        { gate: 4, source: 2, drain: 3, eval: 1 } ]
 
-// var t =[ { gate: 2, source: 0, drain: 3, eval: 1 },
-//      { gate: 4, source: 3, drain: 4, eval: 1 },
-//      { gate: 1, source: 4, drain: 5, eval: 1 },
-//      { gate: 0, source: 4, drain: 5, eval: 1 },
-//      { gate: 3, source: 3, drain: 5, eval: 1 } ];
+// var t =[ 
+// 		{ gate: 0, source: 0, drain: 2, eval: 1 },
+// 		{ gate: 1, source: 0, drain: 4, eval: 1 },
+// 		{ gate: 2, source: 2, drain: 4, eval: 1 },
+// 		{ gate: 3, source: 2, drain: 4, eval: 1 },
+// 		{ gate: 4, source: 2, drain: 6, eval: 1 },
+// 		{ gate: 5, source: 4, drain: 6, eval: 1 },
+// 		{ gate: 6, source: 4, drain: 7, eval: 1 },
+// 		{ gate: 7, source: 6, drain: 7, eval: 1 } ];
 
-// console.log(getOutputOf(t))
+
+//console.log(getOutputOf(t))
 
 
 
