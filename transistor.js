@@ -64,12 +64,18 @@ function makeCircuit(circuit){
 				else if((circuit[i].drain - circuit[i].source ) == 1){
 					depth = unitDepths[circuit[i].source]
 					unitDepths[circuit[i].source] += 45;
-					console.log(circuit[i].source,unitDepths,depth);
+					//console.log(circuit[i].source,unitDepths,depth);
 				}
 
 				makeWiredTransistor(ctx,2,depth,100+startY,90+endY,nodalDistance)
 
 				depth = 0;
+			}
+
+			var maxDrainValue = getMaxDrainValue(circuit)
+
+			if (maxDrainValue != circuit.length) {
+				extendWire(ctx,maxDrainValue,circuit.length,nodalDistance)
 			}
 
 			ctx.moveTo(300,560); // the ground symbol
@@ -139,5 +145,36 @@ function makeTransistor(ctx,x,y,type){
 			
 }
 
+function getMaxDrainValue(circuit){
 
+    var maxDrains = []
+    var found = 0;
 
+    for (var i = circuit.length; i > 0 ; i--) {
+        
+        for (var j = 0; j < circuit.length; j++) {
+            
+            if (circuit[j].drain === i) {
+
+                maxDrains.push(circuit[j]);
+                found = 1;
+            }
+        }
+
+        if (found === 1) {
+            break;
+        }
+    }
+
+    return maxDrains[maxDrains.length-1].drain
+}
+
+function extendWire(ctx,endNode,lastNode,nodalDistance){
+
+	var upto = 510-((lastNode - endNode) * nodalDistance)
+	console.log(upto,endNode,lastNode,nodalDistance)
+	ctx.moveTo(300,510); // the ground symbol
+	ctx.lineTo(300,upto); 
+	
+
+}

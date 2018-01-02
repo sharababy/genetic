@@ -199,7 +199,7 @@ function startEvolution(t){
 
 	var best;
 	do{
-		best = achieveTarget(t , 12000 , 60)
+		best = achieveTarget(t , 9000 , 30)
 		console.log("Best Score:",best.score)
 
 		console.log("Best Circuit:",best.circuit)
