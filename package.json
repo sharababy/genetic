@@ -1,0 +1,21 @@
+{
+  "name": "genetic",
+  "version": "1.0.0",
+  "description": "N-Horizon",
+  "main": "cross.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharababy/genetic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharababy/genetic/issues"
+  },
+  "homepage": "https://github.com/sharababy/genetic#readme"
+}
