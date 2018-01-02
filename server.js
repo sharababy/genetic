@@ -7,7 +7,7 @@ var baseDirectory = __dirname   // or whatever base directory you want
 
 var cross = require("./cross.js")
 
-var port = 3003
+var port = process.env.PORT || 3003
 
 var server = http.createServer(function (request, response) {
    try {
